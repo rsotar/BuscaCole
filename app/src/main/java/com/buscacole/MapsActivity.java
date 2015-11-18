@@ -2,6 +2,7 @@ package com.buscacole;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -9,6 +10,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.kml.KmlLayer;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -24,6 +30,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
+    public void startDemo() {
+        try {
+            //mMap = getMap();
+            Log.i("*** Cargando KML *** - ", mMap.toString());
+            retrieveFileFromResource();
+            //retrieveFileFromUrl();
+        } catch (Exception e) {
+            Log.e("Exception caught", e.toString());
+        }
+    }
+
+
+    private void retrieveFileFromResource() {
+        try {
+            KmlLayer kmlLayerRamalRojo17 = new KmlLayer(mMap, R.raw.ramal_rojo_17, getApplicationContext());
+            KmlLayer kmlLayerRamalViamonte9 = new KmlLayer(mMap, R.raw.ramal_viamonte_9, getApplicationContext());
+            KmlLayer kmlLayerRamalLinea19 = new KmlLayer(mMap, R.raw.ramal_linea_19, getApplicationContext());
+
+            kmlLayerRamalRojo17.addLayerToMap();
+            kmlLayerRamalViamonte9.addLayerToMap();
+            kmlLayerRamalLinea19.addLayerToMap();
+            //moveCameraToKml(kmlLayer);
+        } catch (IOException e) {
+            Log.e("IException", "rober");
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Manipulates the map once available.
@@ -38,6 +73,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        startDemo();
         // Add a marker in Tucuman and move the camera
         LatLng tucuman = new LatLng(-26.8333, -65.2);
         mMap.addMarker(new MarkerOptions().position(tucuman).title("Marker in Tucuman"));

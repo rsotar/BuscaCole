@@ -2,20 +2,20 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
     <Document>
         <name>KmlFile</name>
-        <Style id="transPurpleLineGreenPoly">
+        <Style id="transBlueLineGreenPoly">
             <LineStyle>
-                <color>7fff00ff</color>
+                <color>50FF7800</color>
                 <width>4</width>
             </LineStyle>
             <PolyStyle>
-                <color>7f00ff00</color>
+                <color>50FF7800</color>
             </PolyStyle>
         </Style>
         <Placemark>
             <name>Absolute</name>
             <visibility>1</visibility>
-            <description>Transparent purple line</description>
-            <styleUrl>#transPurpleLineGreenPoly</styleUrl>
+            <description>Transparent blue line</description>
+            <styleUrl>#transBlueLineGreenPoly</styleUrl>
             <LineString>
                 <tessellate>1</tessellate>
                 <altitudeMode>clampToGround</altitudeMode>

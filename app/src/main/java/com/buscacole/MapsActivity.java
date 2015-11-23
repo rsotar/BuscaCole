@@ -10,11 +10,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.kml.KmlContainer;
 import com.google.maps.android.kml.KmlLayer;
+import com.google.maps.android.kml.KmlLineString;
+import com.google.maps.android.kml.KmlPlacemark;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -42,7 +46,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private void retrieveFileFromResource() {
+    public void retrieveFileFromResource() {
+
+        List<LatLng> coordenadasLinea19;
+        List<LatLng> coordenadasLinea17Rojo;
+        List<LatLng> coordenadasLinea9Viamonte;
+
         try {
             KmlLayer kmlLayerRamalRojo17 = new KmlLayer(mMap, R.raw.ramal_rojo_17, getApplicationContext());
             KmlLayer kmlLayerRamalViamonte9 = new KmlLayer(mMap, R.raw.ramal_viamonte_9, getApplicationContext());
@@ -51,6 +60,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             kmlLayerRamalRojo17.addLayerToMap();
             kmlLayerRamalViamonte9.addLayerToMap();
             kmlLayerRamalLinea19.addLayerToMap();
+
+            coordenadasLinea19 = getCoordinatesFromKml(kmlLayerRamalLinea19);
+            coordenadasLinea17Rojo = getCoordinatesFromKml(kmlLayerRamalLinea19);
+            coordenadasLinea9Viamonte = getCoordinatesFromKml(kmlLayerRamalLinea19);
+
             //moveCameraToKml(kmlLayer);
         } catch (IOException e) {
             Log.e("IException", "rober");
@@ -58,6 +72,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    public List<LatLng> getCoordinatesFromKml(KmlLayer kmlLayerMap) {
+
+        //Retrieve the first container in the KML layer
+        KmlContainer container = kmlLayerMap.getContainers().iterator().next();
+
+        //Retrieve the first placemark in the nested container
+        KmlPlacemark placemark = container.getPlacemarks().iterator().next();
+
+        //Retrieve a LineString object in a placemark
+        KmlLineString lineString = (KmlLineString) placemark.getGeometry();
+
+        //Retrieve an Array from objects contained in KmlLineString
+        List<LatLng> coordinatesList = lineString.getGeometryObject();
+        return coordinatesList;
+
     }
 
     /**

@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">BuscaCole</string>
     <string name="title_activity_maps">BuscaCole</string>
+
+    <string name="speak">Hable Ahora</string>
 </resources>
